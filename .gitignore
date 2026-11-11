@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+.earshot/
+PROMPT.md
+SUMMARY.md
+codex.log
+.venv/
+dist/
+__pycache__/
+*.egg-info/
+.otoscope/

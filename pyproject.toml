@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "otoscope"
+version = "0.1.0"
+description = "Offline-first regression tests across the real voice call boundary"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{name = "Otoscope contributors"}]
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=8", "ruff>=0.9", "mypy>=1.14", "build>=1"]
+stt = ["faster-whisper>=1.1,<2"]
+sipling = ["sipling>=0.2,<0.3"]
+pytest = ["pytest>=8"]
+
+[project.entry-points.pytest11]
+otoscope = "otoscope.pytest"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/otoscope"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["live: places a real call; requires --otoscope-live or --live"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+
+[tool.hatch.build.targets.sdist]
+include = ["src/otoscope", "tests", "examples", "pyproject.toml", "README.md", "LICENSE", "DEPENDENCIES.md", "SUMMARY.md", ".github/workflows/ci.yml"]

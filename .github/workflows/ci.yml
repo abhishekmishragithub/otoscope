@@ -1,0 +1,23 @@
+name: Offline regression tests
+on: [push, pull_request]
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.10', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install -e '.[test]'
+      - run: ruff check . && ruff format --check . && mypy src/otoscope
+      - run: pytest tests examples --otoscope-report=.otoscope --junitxml=.otoscope/junit.xml
+      - run: python -m build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: otoscope-${{ matrix.python }}
+          path: .otoscope/
+          include-hidden-files: true
